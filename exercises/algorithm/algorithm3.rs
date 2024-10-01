@@ -3,10 +3,25 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn sort<T: std::cmp::PartialOrd>(array: &mut [T]) {
+    fn quick_sort<T: std::cmp::PartialOrd>(array: &mut [T], left: usize, right: usize) {
+        if right <= left {
+            return;
+        }
+        let p = right;
+        let mut i = left;
+        for j in left..right {
+            if &array[j] < &array[p] {
+                array.swap(i, j);
+                i += 1;
+            }
+        }
+        array.swap(i, p);
+        quick_sort(array, left, i.saturating_sub(1));
+        quick_sort(array, i + 1, right);
+    }
+    quick_sort(array, 0, array.len().saturating_sub(1))
 }
 #[cfg(test)]
 mod tests {
